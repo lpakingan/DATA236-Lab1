@@ -125,4 +125,12 @@ class Favorite(Base):
     reviewer: Mapped["Reviewer"] = relationship("Reviewer", back_populates = "favorites")
     restaurant: Mapped["Restaurant"] = relationship("Restaurant", back_populates = "reviewers_favorited")
 
-    
+class SessionToken(Base):
+    __tablename__ = "sessions"
+
+    id = Mapped[str] = mapped_column(String(64), primary_key=True, index=True)
+    role = Mapped[str] = mapped_column(Enum("reviewer", "owner"), nullable=False)
+    reviewer_id: Mapped[int | None] = mapped_column(Integer, ForeignKey("reviewers.id", ondelete = "CASCADE"), nullable = True)
+    owner_id: Mapped[int | None] = mapped_column(Integer, ForeignKey("owners.id", ondelete = "SET CASCADE"), nullable = True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

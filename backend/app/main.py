@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
 
-from .routers import reviewers, owners
+from .routers import auth_owner, auth_reviewer, reviewers
 from .database import Base, engine
 
 app = FastAPI(title="Tastlytics")
@@ -20,8 +21,9 @@ def startup():
     # Keeps backend minimal: auto-creates tables if missing
     Base.metadata.create_all(bind=engine)
 
+app.include_router(auth_owner.router)
+app.include_router(auth_reviewer.router)
 app.include_router(reviewers.router)
-app.include_router(owners.router)
 
 @app.get("/")
 def health():
