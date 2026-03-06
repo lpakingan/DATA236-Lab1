@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual env
+venv/
+.venv/
+
+# Secrets
+.env
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Database files
+*.db
+*.sqlite3
+
+# Test/cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Frontend dependencies
+node_modules/
