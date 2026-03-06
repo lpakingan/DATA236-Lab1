@@ -43,12 +43,15 @@ def login(email: str, password: str, response: Response, db: Session = Depends(g
         value=session.id,
         httponly=True,
         samesite="lax",
-        max_age=30 * 60
+        max_age=30 * 60,
+        path = "/"
     )
     return {"message": "logged in", "role": "reviewer", "reviewer_id": reviewer.id}
 
 @router.get("/me")
 def me(_session = Depends(require_session)):
+    if _session.role != "reviewer" or not _session.reviewer_id:
+        raise HTTPException(status_code=403, detail="Access for reviewers only!")
     return {"logged_in": True, "role": "reviewer", "reviewer_id": _session.reviewer_id}
 
 @router.post("/logout")

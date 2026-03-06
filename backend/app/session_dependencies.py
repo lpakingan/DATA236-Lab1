@@ -16,7 +16,7 @@ def require_session(request: Request, db: Session = Depends(get_db)):
         raise HTTPException(status_code=401, detail="Session expired or invalid")
     return s  
 
-def create_session(db: Session, role: str, reviewer_id: int | None, owner_id: int | None) -> SessionToken:
+def create_session(db: Session, role: str, reviewer_id: int | None = None, owner_id: int | None = None) -> SessionToken:
     token = secrets.token_hex(32)
     expires = datetime.utcnow() + timedelta(minutes=SESSION_TTL_MINUTES)  
 

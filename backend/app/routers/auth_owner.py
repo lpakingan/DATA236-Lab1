@@ -44,12 +44,15 @@ def login(email: str, password: str, response: Response, db: Session = Depends(g
         value=session.id,
         httponly=True,
         samesite="lax",
-        max_age=30 * 60
+        max_age=30 * 60,
+        path="/"
     )
     return {"message": "logged in", "role": "owner", "owner_id": owner.id}
 
 @router.get("/me")
 def me(_session = Depends(require_session)):
+    if _session.role != "owner" or not _session.owner_id:
+        raise HTTPException(status_code=403, detail="Access for owners only!")
     return {"logged_in": True, "role": "owner", "owner_id": _session.owner_id}
 
 @router.post("/logout")
