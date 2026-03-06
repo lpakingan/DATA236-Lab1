@@ -50,10 +50,10 @@ def login(email: str, password: str, response: Response, db: Session = Depends(g
     return {"message": "logged in", "role": "reviewer", "reviewer_id": reviewer.id}
 
 @router.get("/me")
-def me(_session = Depends(require_session)):
-    if _session.role != "reviewer" or not _session.reviewer_id:
+def me(session = Depends(require_session)):
+    if session.role != "reviewer" or not session.reviewer_id:
         raise HTTPException(status_code=403, detail="Access for reviewers only!")
-    return {"logged_in": True, "role": "reviewer", "reviewer_id": _session.reviewer_id}
+    return {"logged_in": True, "role": "reviewer", "reviewer_id": session.reviewer_id}
 
 @router.post("/logout")
 def logout(request: Request, response: Response, db: Session = Depends(get_db)):
