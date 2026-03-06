@@ -5,7 +5,8 @@ from passlib.context import CryptContext
 from ..session_dependencies import create_session, delete_session, require_session
 
 from ..database import get_db
-from .. import models, schemas
+from .. import schemas
+from ..models import Reviewer
 
 router = APIRouter(prefix="/auth/reviewers", tags=["reviewers-auth"])
 
@@ -14,7 +15,7 @@ hash_password = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @router.post("/signup", response_model=schemas.ReviewerOut, status_code=status.HTTP_201_CREATED)
 def create_reviewer(payload: schemas.ReviewerCreate, db: Session = Depends(get_db)):
-    reviewer = models.Reviewer(
+    reviewer = Reviewer(
         first_name=payload.first_name,
         last_name=payload.last_name,
         email=str(payload.email).lower(),
@@ -32,7 +33,7 @@ def create_reviewer(payload: schemas.ReviewerCreate, db: Session = Depends(get_d
 
 @router.post("/login")
 def login(email: str, password: str, response: Response, db: Session = Depends(get_db)):
-    reviewer = db.query(models.Reviewer).filter(models.Reviewer.email == email.lower()).first()
+    reviewer = db.query(Reviewer).filter(Reviewer.email == email.lower()).first()
     if not reviewer or not hash_password.verify(password, reviewer.password):
         raise HTTPException(status_code=401, detail="Invalid email/password.")
 

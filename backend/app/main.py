@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
 
-from .routers import auth_owner, auth_reviewer, reviewers
+from .routers import auth_owner, auth_reviewer, reviewers, preferences
 from .database import Base, engine
+
+from . import models
 
 app = FastAPI(title="Tastlytics")
 

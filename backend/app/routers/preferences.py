@@ -1,19 +1,19 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from .. import models, schemas
-from ..session_dependencies import require_session
-from reviewers import check_reviewer
+from .. import schemas
+from ..models import ReviewerPreference
+from .reviewers import check_reviewer
 
 router = APIRouter(prefix="/reviewers/me/preferences", tags=["preferences"])
 
 # get current reviewer's preferences; if none are available create default
 @router.get("", response_model=schemas.ReviewerPreferenceOut)
 def get_current_reviewer_prefs(db: Session = Depends(get_db), _session=Depends(check_reviewer)):
-    prefs = db.get(models.ReviewerPreference, _session.reviewer_id)
+    prefs = db.get(ReviewerPreference, _session.reviewer_id)
     if not prefs:
-        prefs = models.ReviewerPreference(reviewer_id = _session.reviewer_id)
+        prefs = ReviewerPreference(reviewer_id = _session.reviewer_id)
         db.add(prefs)
         db.commit()
         db.refresh(prefs)
@@ -21,10 +21,10 @@ def get_current_reviewer_prefs(db: Session = Depends(get_db), _session=Depends(c
 
 # update current reviewer's preferences
 @router.put("", response_model=schemas.ReviewerPreferenceOut)
-def update_current_reviewer_prefs(payload: schemas.ReviewerPreferenceUpdate, _session=Depends(check_reviewer), db: Session = Depends(get_db)):
-    prefs = db.get(models.ReviewerPreference, _session.reviewer_id)
+def update_current_reviewer_prefs(payload: schemas.ReviewerPreferenceUpdate, db: Session = Depends(get_db), _session=Depends(check_reviewer)):
+    prefs = db.get(ReviewerPreference, _session.reviewer_id)
     if not prefs:
-        prefs = models.ReviewerPreference(reviewer_id = _session.reviewer_id)
+        prefs = ReviewerPreference(reviewer_id = _session.reviewer_id)
         db.add(prefs)
    
     data = payload.model_dump(exclude_unset=True)
