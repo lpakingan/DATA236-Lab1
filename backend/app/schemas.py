@@ -77,25 +77,6 @@ class ReviewerPreferenceOut(BaseModel):
     class Config:
         from_attributes = True
 
-# -------- Owners --------
-class OwnerCreate(BaseModel):
-    first_name: str = Field(min_length=2, max_length=100)
-    last_name: str = Field(min_length=2, max_length=100)
-    email: EmailStr
-    password: str = Field(min_length=5)
-    restaurant_location: str = Field(min_length=1)
-
-class OwnerOut(BaseModel):
-    id: int
-    first_name: str 
-    last_name: str 
-    email: EmailStr
-    restaurant_location: str 
-    created_at: datetime
-    updated_at: datetime
-    class Config:
-        from_attributes = True
-
 # -------- Restaurants --------
 class RestaurantCreate(BaseModel):
     name: str = Field(max_length=100)
@@ -142,6 +123,27 @@ class RestaurantOut(BaseModel):
     claimed_by_owner_id: int | None
     created_by_reviewer_id: int | None
     created_by_owner_id: int | None
+    created_at: datetime
+    updated_at: datetime
+    class Config:
+        from_attributes = True
+
+# -------- Owners --------
+class OwnerCreate(BaseModel):
+    first_name: str = Field(min_length=2, max_length=100)
+    last_name: str = Field(min_length=2, max_length=100)
+    email: EmailStr
+    password: str = Field(min_length=5)
+    restaurant_location: str = Field(min_length=1)
+
+class OwnerOut(BaseModel):
+    id: int
+    first_name: str 
+    last_name: str 
+    email: EmailStr
+    restaurant_location: str 
+    restaurants_posted: list[RestaurantOut] = []
+    claimed_restaurants: list[RestaurantOut] = []
     created_at: datetime
     updated_at: datetime
     class Config:
