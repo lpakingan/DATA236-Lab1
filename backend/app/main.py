@@ -25,6 +25,7 @@ def startup():
 app.include_router(auth_owner.router)
 app.include_router(auth_reviewer.router)
 app.include_router(reviewers.router)
+app.include_router(preferences.router)
 
 @app.get("/")
 def health():
