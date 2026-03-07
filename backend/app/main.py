@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import auth_owner, auth_reviewer, reviewers, preferences, restaurants, owners
+from .routers import auth_owner, auth_reviewer, reviewers, preferences, restaurants, owners, reviews, favorites
 from .database import Base, engine
 
 from . import models
@@ -28,6 +28,8 @@ app.include_router(reviewers.router)
 app.include_router(owners.router)
 app.include_router(preferences.router)
 app.include_router(restaurants.router)
+app.include_router(reviews.router)
+app.include_router(favorites.router)
 
 @app.get("/")
 def health():

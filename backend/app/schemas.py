@@ -151,7 +151,6 @@ class OwnerOut(BaseModel):
 
 # -------- Reviews --------
 class ReviewCreate(BaseModel):
-    restaurant_id: int = Field(gt=0)
     rating: int = Field( ge=1, le=5)
     comment: str = Field(min_length=5, max_length=500)
     photos: Optional[list[str]] = Field(default=None)
