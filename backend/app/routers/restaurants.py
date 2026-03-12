@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, String
 
 from ..database import get_db
 from .. import schemas
@@ -41,7 +41,7 @@ def get_restaurants(
     if cuisine:
         query = query.filter(Restaurant.cuisine.ilike(f"%{cuisine}%"))
     if keyword:
-        query = query.filter(func.cast(Restaurant.keywords, func.char).ilike(f"%{keyword}%"))
+        query = query.filter(func.cast(Restaurant.keywords, String).ilike(f"%{keyword}%"))
     if city:
         query = query.filter(Restaurant.city.ilike(f"%{city}%"))
 
@@ -63,7 +63,7 @@ def update_restaurant(restaurant_id: int, payload: schemas.RestaurantUpdate, db:
         raise HTTPException(status_code=404, detail="Restaurant not found!")
     
     if restaurant.claim_status == "claimed":
-        if restaurant.claimed_by_owner != session.owner_id or session.role != "owner":
+        if restaurant.claimed_by_owner_id != session.owner_id or session.role != "owner":
             raise HTTPException(status_code=403, detail="Must be restaurant's owner to edit!")
     else:
         if session.role == "reviewer" and restaurant.created_by_reviewer_id != session.reviewer_id:
