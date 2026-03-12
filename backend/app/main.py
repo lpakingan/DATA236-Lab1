@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .routers import auth_owner, auth_reviewer, reviewers, preferences, restaurants, owners, reviews, favorites
-from .database import Base, engine
+from .database.database import Base, engine
 
 from . import models
 

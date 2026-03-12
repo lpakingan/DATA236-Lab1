@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta
 import secrets
 from sqlalchemy.orm import Session
-from .models import SessionToken
+from ..models import SessionToken
 from fastapi import Depends, HTTPException, Request
-from .database import  get_db
+from ..database.database import  get_db
 
 SESSION_TTL_MINUTES = 30
 

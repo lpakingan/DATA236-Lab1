@@ -2,17 +2,17 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
-from ..database import get_db
+from ..database.database import get_db
 from .. import schemas
 from ..models import Favorite, Restaurant
-from ..session_dependencies import require_session
+from ..dependencies.session import require_session
 
 router = APIRouter(prefix="/reviewers/me/favorites", tags=["favorites"])
 
 # check the user role of the current session being used (make sure its a reviewer)
 def check_reviewer(session = Depends(require_session)):
     if getattr(session, "role", None) != "reviewer" or not getattr(session, "reviewer_id", None):
-        raise HTTPException(status_code=403, detail="Must be reviewer for review functionality!")
+        raise HTTPException(status_code=403, detail="Must be reviewer for favoriting functionality!")
     return session
 
 # add a restaurant to a user's favorites

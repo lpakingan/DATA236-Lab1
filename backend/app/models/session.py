@@ -1,6 +1,6 @@
 from sqlalchemy import String, Integer, ForeignKey, DateTime, func, Enum
 from sqlalchemy.orm import Mapped, mapped_column
-from ..database import Base
+from ..database.database import Base
 from datetime import datetime
 
 class SessionToken(Base):

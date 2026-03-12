@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 from sqlalchemy import func, String
 
-from ..database import get_db
+from ..database.database import get_db
 from .. import schemas
 from ..models import Restaurant
-from ..session_dependencies import require_session
+from ..dependencies.session import require_session
 
 router = APIRouter(prefix="/restaurants", tags=["restaurants"])
 

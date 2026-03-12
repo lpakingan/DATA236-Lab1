@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
-from ..database import get_db
+from ..database.database import get_db
 from .. import schemas
 from ..models import Review, Restaurant
-from ..session_dependencies import require_session
+from ..dependencies.session import require_session
 
 router = APIRouter(tags=["reviews"])
 

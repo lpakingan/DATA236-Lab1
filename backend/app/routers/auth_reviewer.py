@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from passlib.context import CryptContext
-from ..session_dependencies import create_session, delete_session, require_session
+from ..dependencies.session import create_session, delete_session, require_session
 
-from ..database import get_db
+from ..database.database import get_db
 from .. import schemas
 from ..models import Reviewer
 

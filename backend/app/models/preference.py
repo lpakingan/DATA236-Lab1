@@ -2,7 +2,7 @@ from sqlalchemy import Integer, DateTime, func, ForeignKey, Enum
 from sqlalchemy.dialects.mysql import JSON
 from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from ..database import Base
+from ..database.database import Base
 from datetime import datetime
 
 class ReviewerPreference(Base):

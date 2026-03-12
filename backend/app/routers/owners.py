@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from ..database import get_db
+from ..database.database import get_db
 from .. import schemas
 from ..models import Owner
-from ..session_dependencies import require_session
+from ..dependencies.session import require_session
 
 router = APIRouter(prefix="/owners", tags=["owners"])
 
