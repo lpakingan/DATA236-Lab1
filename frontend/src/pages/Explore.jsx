@@ -1,15 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import AssistantInterface from './AssistantInterface';
-import axios from 'axios';
+// import AssistantInterface from './AssistantInterface';
+import api from "../api/api";
 
 const Explore = () => {
     const [restaurants, setRestaurants] = useState([]);
     const [search, setSearch] = useState("");
+    const [searchBy, setSearchBy] = useState("name");
+    const [searched, setSearched] = useState(false);
+
+    const placeholderText =
+        searchBy === "name" ? "Search by restaurant name..." 
+        : searchBy === "cuisine" ? "Search by cuisine..." 
+        : searchBy === "keyword" ? "Search by keyword..." 
+        : searchBy === "city" ? "Search by city..." 
+        : "Search...";
 
     const fetchResults = async () => {
-        const res = await axios.get(`http://localhost:8000/restaurants?query=${search}`); // [cite: 81]
-        setRestaurants(res.data);
-    };
+        try {
+            let params = {}
+            
+            if (searchBy === "name") {
+                params.name = search;
+            } else if (searchBy === "cuisine") {
+                params.cuisine = search;
+            } else if (searchBy === "keyword") {
+                params.keyword = search;
+            } else if (searchBy === "city") {
+                params.city = search;
+            }
+
+            const res = await api.get("/restaurants", {params}); 
+            setRestaurants(Array.isArray(res.data) ? res.data : []);
+            setSearched(true);
+            setSearch("");
+        } catch (err) {
+            setRestaurants([]);
+            setSearched(true);
+            setSearch("");
+        }
+    }
 
     return (
         <div className="container mt-4">
@@ -18,9 +47,21 @@ const Explore = () => {
                     <div className="input-group mb-4">
                         <input 
                             className="form-control form-control-lg" 
-                            placeholder="Search by name, cuisine, or keyword..." 
+                            placeholder={placeholderText} 
+                            value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
+
+                        <select 
+                            className="form-control form-control-lg" 
+                            value={searchBy}
+                            onChange={(e) => setSearchBy(e.target.value)}
+                        >
+                            <option value="name"> Name </option>
+                            <option value="cuisine"> Cuisine </option>
+                            <option value="keyword"> Keyword </option>
+                            <option value="city"> City </option>
+                        </select>
                         <button className="btn btn-danger" onClick={fetchResults}>Search</button>
                     </div>
                     <div className="row">
@@ -29,7 +70,7 @@ const Explore = () => {
                                 <div className="card h-100 shadow-sm">
                                     <div className="card-body">
                                         <h5 className="card-title">{r.name}</h5>
-                                        <p className="text-muted mb-1">{r.cuisine} • {r.price_range}</p>
+                                        <p className="text-muted mb-1">{r.cuisine} • {r.pricing}</p>
                                         <p className="small">{r.location}</p>
                                         <span className="badge bg-warning text-dark">{r.rating} ⭐</span>
                                     </div>
@@ -37,9 +78,16 @@ const Explore = () => {
                             </div>
                         ))}
                     </div>
+                    {searched && restaurants.length === 0 && (
+                        <div className="col-12">
+                            <div className="alert alert-warning">
+                                No results found. Try searching again!
+                            </div>
+                        </div>
+                    )}
                 </div>
                 <div className="col-md-4">
-                    <AssistantInterface />
+                    {/* <AssistantInterface /> */}
                 </div>
             </div>
         </div>
