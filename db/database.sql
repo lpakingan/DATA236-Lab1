@@ -205,19 +205,19 @@ INSERT INTO restaurants
  claim_status, claimed_by_owner_id, created_by_reviewer_id, created_by_owner_id)
 VALUES
 ('Taco Town', 'Mexican', 'Street-style tacos and aguas frescas.', '123 Main St', 'San Jose', 'CA', 'US',
- '408-555-9000', '11am-9pm', JSON_ARRAY('https://pics.example/taco1.jpg'), '$', JSON_ARRAY('tacos','outdoor seating','wifi'),
+ '408-555-9000', '11am-9pm', NULL, '$', JSON_ARRAY('tacos','outdoor seating','wifi'),
  'unclaimed', NULL, 1, NULL),
 
 ('Sushi Star', 'Japanese', 'Omakase and nigiri specials.', '9 Market St', 'San Francisco', 'CA', 'US',
- '415-555-9001', '5pm-10pm', JSON_ARRAY('https://pics.example/sushi1.jpg'), '$$$', JSON_ARRAY('sushi','date night'),
+ '415-555-9001', '5pm-10pm', NULL, '$$$', JSON_ARRAY('sushi','date night'),
  'claimed', 2, NULL, 2),
 
 ('Curry Corner', 'Indian', 'Comfort curry and naan.', '55 Santa Clara St', 'San Jose', 'CA', 'US',
- '408-555-9002', '11am-10pm', JSON_ARRAY('https://pics.example/curry1.jpg'), '$$', JSON_ARRAY('curry','family friendly'),
+ '408-555-9002', '11am-10pm', NULL, '$$', JSON_ARRAY('curry','family friendly'),
  'claimed', 1, 3, NULL),
 
 ('Cafe Bloom', 'Cafe', 'Espresso, matcha, and pastries.', '700 Broadway', 'Oakland', 'CA', 'US',
- '510-555-9003', '7am-4pm', JSON_ARRAY('https://pics.example/cafe1.jpg'), '$', JSON_ARRAY('coffee','pastries','quiet'),
+ '510-555-9003', '7am-4pm', NULL, '$', JSON_ARRAY('coffee','pastries','quiet'),
  'unclaimed', NULL, 3, NULL);
 
 -- reviews example data
