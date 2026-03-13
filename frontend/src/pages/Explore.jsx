@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // import AssistantInterface from './AssistantInterface';
+import RestaurantCard from '../components/RestaurantCard';
 import api from "../api/api";
 
 const Explore = () => {
@@ -67,14 +68,7 @@ const Explore = () => {
                     <div className="row">
                         {restaurants.map(r => (
                             <div key={r.id} className="col-md-6 mb-3">
-                                <div className="card h-100 shadow-sm">
-                                    <div className="card-body">
-                                        <h5 className="card-title">{r.name}</h5>
-                                        <p className="text-muted mb-1">{r.cuisine} • {r.pricing}</p>
-                                        <p className="small">{r.location}</p>
-                                        <span className="badge bg-warning text-dark">{r.rating} ⭐</span>
-                                    </div>
-                                </div>
+                                <RestaurantCard restaurant={r} />
                             </div>
                         ))}
                     </div>
